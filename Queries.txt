@@ -1,0 +1,37 @@
+create table Doctor
+(
+  D_id varchar(30) PRIMARY KEY ,
+  D_name varchar(30) not null,
+  Speciality VARCHAR(30)
+);
+
+
+create table Patient
+(
+  P_id  VARCHAR(30) PRIMARY KEY ,
+  P_name VARCHAR(30),
+  reg_date DATE,
+  adress VARCHAR(30),
+  major_chemical VARCHAR(30),
+  disorder VARCHAR(30),
+  type VARCHAR(16),
+  Flag int(4),
+  Message VARCHAR(50)
+);
+
+create table Serves
+(
+   Doc_id VARCHAR(30),
+   Pt_id VARCHAR(30) ,
+  FOREIGN KEY (Doc_id) REFERENCES Doctor(D_id) ON UPDATE CASCADE ,
+  FOREIGN KEY (Pt_id) REFERENCES Patient(P_id) ON UPDATE CASCADE ,
+  PRIMARY KEY (Doc_id,Pt_id),
+  Medication VARCHAR(30) NOT NULL
+);
+
+SELECT * FROM Patient
+
+ALTER TABLE Patient DROP COLUMN type;
+
+DELETE from Patient WHERE P_id='1'
+
