@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Rehab_Index</title>
+    <title>Rehab_approve</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
@@ -28,7 +28,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "Rehab_2";
+$dbname = "Rehab";
 
 
 $conn=new mysqli($servername,$username,$password,$dbname);
@@ -37,16 +37,58 @@ $conn=new mysqli($servername,$username,$password,$dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+    function addDayswithdate($date, $days)
+    {
 
-$date=date('y-m-d',strtotime($_GET["reg_date"]));
-$flag=0;
+        $date = strtotime("+" . $days . " days", strtotime($date));
+        return date("Y-m-d", $date);
 
-$sql = "insert into rehab_2.patient VALUES
-    ('" . $_GET["id"] . "','" . $_GET["name"] . "','" . $date ."','". $_GET["adress"] . "','" . $_GET["major_chemical"] . "','". $_GET["disorder"] .  "','" . $flag ."','". $_GET["message"] ."')";
-if ($conn->query($sql) === TRUE) {
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-}
+    }
+
+    $sql_id = "select P_id from patient WHERE P_name='" . $_GET['name'] . "'";
+    $resultid = mysqli_query($conn, $sql_id);
+    $id_array = mysqli_fetch_array($resultid);
+    $id = $id_array['P_id'];
+    $sql_slip = "select p_name,P_id from patient";
+
+$result = mysqli_query($conn, $sql_slip);
+while ($row = mysqli_fetch_array($result)) {
+    if ($row['p_name'] == $_GET["name"] && $row['P_id'] != $_GET["id"]) {
+        echo "SLIP DETECTED";
+        echo $row['p_name'] . "new id=>" . $_GET['id'] . "old id=>" . $id;
+    }
+}           $sql2 = "insert into serves VALUES('d12','$id','tests',TRUE ,'1');";
+            $sql1 = "UPDATE serves SET serves.dope_test =TRUE,serves.slip='1' WHERE Doc_id='d12' and Pt_id='". $id ."'";
+            mysqli_query($conn,$sql1);
+            $sql2 = "insert into serves VALUES('d12','$id','tests',TRUE ,'1');";
+            mysqli_query($conn, $sql1);
+            $insert_Rid = "r"."$id";
+            //echo $insert_Rid . "SLIPPED_RECORD";
+            $sql_confirm_slip = "UPDATE record SET record.cleandays ='SLIPPED' WHERE R_id='". $insert_Rid ."'";
+            mysqli_query($conn, $sql_confirm_slip);
+
+
+
+            echo "inserting";
+            $flag = 0;
+            $released = addDayswithdate($_GET["reg_date"], 90);
+            $lastDate = date("Y/m/d");
+            $insert_R_id = "r" . $_GET['id'];
+            $sql_r = 'INSERT INTO record (R_id, released, last_session, meeting, cleandays)
+    VALUES("' . $insert_R_id . '", "' . $released . '", "' . $lastDate . '", "' . $flag . '", "' . $flag . '")';
+            $conn->query($sql_r);
+            $date = date('y-m-d', strtotime($_GET["reg_date"]));
+
+            $sql = "insert into rehab.patient VALUES
+    ('" . $_GET["id"] . "','" . $_GET["name"] . "','" . $date . "','" . $_GET["adress"] . "','" . $_GET["major_chemical"] . "','" . $_GET["disorder"] . "','" . $flag . "','" . $_GET["message"] . "','" . "r" . $_GET["id"] . "')";
+
+            if ($conn->query($sql) === TRUE) {
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+
+
+
 ?>
 
 <row>
@@ -143,49 +185,8 @@ if ($conn->query($sql) === TRUE) {
         <div class="status"></div>
     </div>
 </row>
-<row>
-    <!--code for printing pending request-->
-    <?php
-
-    $sql_table = "select * from patient WHERE Flag='0';";
-    if($result = mysqli_query($conn, $sql_table)){
-        ?><form name="myForm"  action="Try.php" method="get"></form><?php
-        echo "<<table class=\"table table-striped rgba-light-green-slight\">>";
-        echo "<tr>";
-        echo "<th>ID</th>";
-        echo "<th>Name</th>";
-        echo "<th>entry date</th>";
-        echo "<th>adress</th>";
-        echo "<th>major Substance</th>";
-        echo "<th>disorder</th>";
-        echo "<th>Flag</th>";
-        echo "<th>Messaage</th>";
-        echo "<th>Action</th>";
-        echo "</tr>";
-
-        while ($row = mysqli_fetch_array($result)) {
-            ?> <td><input type="submit" value="Change" name="submit_btn"></td><?php
-            echo "<tr>";
-            echo "<td name='P_id'>" . $row['P_id'] . "</td>";
-            echo "<td name=''P_name''>" . $row['P_name'] . "</td>";
-            echo "<td name='reg_date'>". $row['reg_date'] . "</td>";
-            echo "<td name='address'>" . $row['adress'] . "</td>";
-            echo "<td name='major_chemiacal'>" . $row['major_chemical'] . "</td>";
-            echo "<td name='disorder'>" . $row['disorder'] . "</td>";
-            echo "<td>" . 'Pending' . "</td>";
-            echo "<<td name='Message'>" . $row['Message'] . "</td>";
-            echo "<td> <a href='try.php?id=" . $row['P_id'] . "'>Edit</a></td>";
-            echo "</tr>";
-        }
-        echo "</table>";
-
-    }
-    // echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
-
-    ?>
 
 
-</row>
 
 <div class="right-div">
     <div class="centerPosition">

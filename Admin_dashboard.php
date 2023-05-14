@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (!$_SESSION['is_login']) {
+    # code...
+    die('you no see page!');
+}
+?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
@@ -14,340 +22,227 @@
     <link href="css/mdb.min.css" rel="stylesheet">
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet">
-    <style>
-        @media (max-width:767px) {
-            .fb_iframe_widget {
-                width: 100%;
-            }
-            .fb_iframe_widget span {
-                width: 100% !important;
-            }
-            .fb_iframe_widget iframe {
-                width: 100% !important;
-            }
-            ._8r {
-                margin-right: 5px;
-                margin-top: -4px !important;
-            }
+    <link href="https://fonts.googleapis.com/css?family=Aref+Ruqaa" rel="stylesheet">
+    <style>able.dataTable thead>tr>td.sorting,
+        table.dataTable thead>tr>td.sorting_asc,
+        table.dataTable thead>tr>td.sorting_desc,
+        table.dataTable thead>tr>th.sorting,
+        table.dataTable thead>tr>th.sorting_asc,
+        table.dataTable thead>tr>th.sorting_desc {
+            padding-right: 30px
+        }
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_asc_disabled,
+        table.dataTable thead .sorting_desc,
+        table.dataTable thead .sorting_desc_disabled {
+            cursor: pointer;
+            position: relative
+        }
+
+        table.dataTable thead .sorting:after,
+        table.dataTable thead .sorting:before,
+        table.dataTable thead .sorting_asc:after,
+        table.dataTable thead .sorting_asc:before,
+        table.dataTable thead .sorting_asc_disabled:after,
+        table.dataTable thead .sorting_asc_disabled:before,
+        table.dataTable thead .sorting_desc:after,
+        table.dataTable thead .sorting_desc:before,
+        table.dataTable thead .sorting_desc_disabled:after,
+        table.dataTable thead .sorting_desc_disabled:before {
+            position: absolute;
+            bottom: .5em;
+            display: block;
+            opacity: .3
+        }
+
+        table.dataTable thead .sorting:before,
+        table.dataTable thead .sorting_asc:before,
+        table.dataTable thead .sorting_asc_disabled:before,
+        table.dataTable thead .sorting_desc:before,
+        table.dataTable thead .sorting_desc_disabled:before {
+            right: 1em;
+            content: "\f0de";
+            font-family: FontAwesome;
+            font-size: 1rem
+        }
+
+        table.dataTable thead .sorting:after,
+        table.dataTable thead .sorting_asc:after,
+        table.dataTable thead .sorting_asc_disabled:after,
+        table.dataTable thead .sorting_desc:after,
+        table.dataTable thead .sorting_desc_disabled:after {
+            content: "\f0dd";
+            font-family: FontAwesome;
+            right: 16px;
+            font-size: 1rem
+        }
+
+        table.dataTable thead .sorting_asc:before,
+        table.dataTable thead .sorting_desc:after {
+            opacity: 1
+        }
+
+        table.dataTable thead .sorting_asc_disabled:before,
+        table.dataTable thead .sorting_desc_disabled:after {
+            opacity: 0
         }
     </style>
 
 </head>
 <body>
 
-<header>
-    <div class="container-fluid blue animated shadow-sm">
-        <!-- Navbar -->
-        <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
-            <div class="container">
-
-                <!-- Brand -->
-                <a class="navbar-brand" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
-                    <strong>Rehab Centre</strong>
-                </a>
-
-                <!-- Collapse -->
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Links -->
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                    <!-- Left -->
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <!-- Dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false">Treatment</a>
-                            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">12 Step NA</a>
-                                <a class="dropdown-item" href="#">Group Counseling</a>
-
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false">Disorders</a>
-                            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Drug Addiction </a>
-                                <a class="dropdown-item" href="#">Substance abuse induced psychosis</a>
-                                <a class="dropdown-item" href="#">Schizophrenia</a>
-                                <a class="dropdown-item" href="#">Bipolar depression </a>
-                                <a class="dropdown-item" href="#">Depression</a>
-                                <a class="dropdown-item" href="#">Personality disorder </a>
-                                <a class="dropdown-item" href="#">Anxiety disorder </a>
-                                <a class="dropdown-item" href="#">Obsessive compulsive disorder </a>
-                                <a class="dropdown-item" href="#">ADHD</a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#formy">Emergency</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#Location">Location</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="utj.html" target="_blank">Experts</a>
-                        </li>
-                    </ul>
-
-                    <!-- Right -->
-                    <ul class="navbar-nav nav-flex-icons">
-                        <li class="nav-item">
-                            <a href="#FB" class="nav-link">
-                                <i href="#FB" class="fa fa-facebook"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="https://twitter.com" class="nav-link">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link border border-light rounded">
-                                <i class="fa fa-phone green" aria-hidden="true"></i>+880 0191-XX
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-
-            </div>
-        </nav>
-        <!-- Navbar -->
-        <br><br>
-        <br><br>
-    </div>
-
-</header>
+<?php include 'Header.php'?>
+<div class="row rgba-blue-grey-light"><div style="text-align: left;" class=" col-md-10 alert alert-primary animated zoomIn" role="alert">Hello <?php echo $_SESSION['name']; ?></div><div class="col-md-3=4>"><a href="logout.php" class="btn btn-default btn-rounded" >LogOut</a></div></div>
+<div class="alert alert-success" role="alert">
+<h1>Secret Page Here</h1>
+</div>
 <main>
-    <? include 'Connection.php';
-    ?>
+
     <div id="row">
+        <?php include 'Connection.php'?>
+        <!--code for printing pending request-->
+        <?php
+
+        $sql_table = "select * from patient WHERE Flag='0';";
+        if($result = mysqli_query($conn, $sql_table)){
+            ?><form name="myForm"  action="Accept.php" method="get"></form><?php
+            ?><table id="dtVerticalScrollExample" style="font-family: 'Aref Ruqaa', serif;" class="table table-striped table-bordered table-sm animated bounceInUp slower z-depth-3" cellspacing="0" width="100%"><?php
+            echo "<thread>";
+            echo "<tr>";
+            echo "<th class=\"th-sm\">ID</th>";
+            echo "<th class=\"th-sm\">Name</th>";
+            echo "<th class=\"th-sm\">entry date</th>";
+            echo "<th class=\"th-sm\">adress</th>";
+            echo "<th class=\"th-sm\">major Substance</th>";
+            echo "<th class=\"th-sm\">disorder</th>";
+            echo "<th class=\"th-sm\">Flag</th>";
+            echo "<th class=\"th-sm\">Messaage</th>";
+            echo "<th class=\"th-sm\">Action</th>";
+            echo "<th class=\"th-sm\">Update</th>";
+            echo "</tr>";
+            echo "</thread>";
+
+            while ($row   = mysqli_fetch_array($result)) {
+                echo "<tbody>";
+                echo "<tr>";
+                echo "<td>" . $row['P_id'] . "</td>";
+                echo "<td>" . $row['P_name'] . "</td>";
+                echo "<td>". $row['reg_date'] . "</td>";
+                echo "<td>" . $row['adress'] . "</td>";
+                echo "<td>" . $row['major_chemical'] . "</td>";
+                echo "<td>" . $row['disorder'] . "</td>";
+                echo "<td class='font-weight-bold red-text'>" . 'Pending' . "</td>";
+                echo "<td>" . $row['Message'] . "</td>";
+                //echo "<td class='font-weight-bold'> <a href='Accept.php?id=" . $row['P_id'] . "'><span style='color: slateblue ;'>Approve</span></a></td>";
+                echo "<td><a role='button' href='Accept.php?id=" . $row['P_id'] . "' class='btn btn-rounded btn-dark-green z-depth-5'>Approve</a></td>";
+
+                echo "<td class='font-weight-bold'>
+
+<form action=\"Change.php\" method=\"get\" >
+            <select name=\"field\" class=\"browser-default custom-select mb-4\">
+                <option value=\"\" disabled>Choose option</option>
+                <option value=\"P_name\" selected>Name</option>
+                <option value=\"reg_date\">Date</option>
+                <option value=\"adress\">adress</option>
+            </select>
+             <input type=\"text\" id=\"value\" name=\"value\" class=\"form-control mb-4\" placeholder=\"Insert\">
+             <input type=\"hidden\" id=\"value\" value='".$row['P_id']."' name=\"P_id\" class=\"form-control mb-4\" placeholder=\"Insert\">
+            <button class=\"btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-5\" type=\"submit\">Change</button>
+             </form>
+             </td>";
+                echo "</tr>";
+                echo "</tbody>";
+            }
+
+            echo "<tfoot>";
+            echo "<tr>";
+            echo "<th class=\"th-sm\">ID</th>";
+            echo "<th class=\"th-sm\">Name</th>";
+            echo "<th class=\"th-sm\">entry date</th>";
+            echo "<th class=\"th-sm\">adress</th>";
+            echo "<th class=\"th-sm\">major Substance</th>";
+            echo "<th class=\"th-sm\">disorder</th>";
+            echo "<th class=\"th-sm\">Flag</th>";
+            echo "<th class=\"th-sm\">Messaage</th>";
+            echo "<th class=\"th-sm\">Action</th>";
+            echo "<th class=\"th-sm\">Update</th>";
+            echo "</tr>";
+            echo "</tfoot>";
+
+            echo "</table>";
+
+        }
+        // echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
+        ?>
+
 
     </div>
-    <!---modal signup-->
-    <div class="row">
-        <!-- Modal -->
-        <div class="modal fade" id="elegantModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <!--Content-->
-                <div class="modal-content form-elegant">
-                    <!--Header-->
-                    <div class="modal-header text-center">
-                        <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel"><strong>Sign in</strong></h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <!--Body-->
-                    <div class="modal-body mx-4">
-                        <!--Body-->
-                        <!-- Default form register -->
-                        <form class="text-center border border-light p-5">
+    <div class="row" name="formrow">
+        <!-- Default form contact -->
+        <form class="text-center rgba-light-green-light border border-light p-5 z-depth-3 animated slideInLeft slower" action="doctor.php" method="post" enctype="multipart/form-data">
 
-                            <p class="h4 mb-4">Sign up</p>
+            <p class="h4 mb-4">Update Doctors</p>
 
-                            <div id="FORM!"class="form-row mb-4">
+            <!-- Name -->
+            <input type="text" id="name" name="name" class="form-control mb-4" placeholder="Name">
 
-                                <!-- E-mail -->
-                                <input type="email" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail">
+            <!-- Email -->
+            <input type="text" id="id" name="id" class="form-control mb-4" placeholder="id">
 
-                                <!-- Password -->
-                                <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
-                                <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
-                                    At least 8 characters and 1 digit
-                                </small>
-
-                                <!-- Newsletter -->
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="defaultRegisterFormNewsletter">
-                                    <label class="custom-control-label" for="defaultRegisterFormNewsletter">Subscribe to our newsletter</label>
-                                </div>
-
-                                <!-- Sign up button -->
-                                <button class="btn btn-info my-4 btn-block" type="submit">Sign in</button>
-
-                                <hr>
-
-                                <!-- Terms of service -->
-                                <p>By clicking
-                                    <em>Sign up</em> you agree to our
-                                    <a href="" target="_blank">terms of service</a> and
-                                    <a href="" target="_blank">terms of service</a>. </p>
-
-                            </div>
-                        </form>
-                        <!-- Default form register -->
-
-                        <p class="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-2"> or Sign in
-                            with:</p>
-
-                        <div class="row my-3 d-flex justify-content-center">
-                            <!--Facebook-->
-                            <button type="button" class="btn btn-white btn-rounded mr-md-3 z-depth-1a"><i class="fa fa-facebook text-center"></i></button>
-                            <!--Twitter-->
-                            <button type="button" class="btn btn-white btn-rounded mr-md-3 z-depth-1a"><i class="fa fa-twitter"></i></button>
-                            <!--Google +-->
-                            <button type="button" class="btn btn-white btn-rounded z-depth-1a"><i class="fa fa-google-plus"></i></button>
-                        </div>
-                    </div>
-                    <!--Footer-->
-                    <div class="modal-footer mx-5 pt-3 mb-1">
-                        <p class="font-small grey-text d-flex justify-content-end">Not a member? <a href="#" class="blue-text ml-1">
-                                Sign Up</a></p>
-                    </div>
-                </div>
-                <!--/.Content-->
+            <!-- Subject -->
+            <label>Speciality</label>
+            <select name="speciality" class="browser-default custom-select mb-4">
+                <option value="" disabled>Choose option</option>
+                <option value="Doctor" selected>Doctor</option>
+                <option value="Case Manager">Case Manager</option>
+                <option value="Councilor">Councilor</option>
+                <option value="In-House instructor">In-House instructor</option>
+            </select>
+            <!-- Message -->
+        <div class="file-field big">
+            <a class="btn-floating btn-lg pink lighten-1 mt-0 float-left z-depth-3">
+                <i class="fa fa-paperclip" aria-hidden="true"></i>
+                Select image to upload:
+                <input type="file" name="fileToUpload" id="fileToUpload">
+            </a>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Upload one or more files">
             </div>
         </div>
-        <!-- Modal -->
+            <div class="form-group">
+                <textarea class="form-control rounded-0" name="details" id="details" rows="3" placeholder="Details"></textarea>
+            </div>
 
-        <div class="text-center">
-            <a href="" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#elegantModalForm">Launch
-                modal Login Form</a>
+            <!-- Send button -->
+            <button class="btn btn-info btn-block z-depth-2" type="submit" name="submit" value="Upload Image">Send</button>
+
+        </form>
+        <!-- Default form contact -->
+    </div>
+    <!--Panel-->
+    <div class="card col-md-5 align-content-right">
+        <h3 class="card-header light-blue lighten-1 white-text text-uppercase font-weight-bold text-center py-5">Slip Count per patients</h3>
+        <div class="card-body">
+            <?php
+            $sql_drugs="select * from (select P_name,count(*) as SLIPCOUNT from Patient group by P_name) as derived_table where derived_table.SLIPCOUNT>1;;";
+            if($result = mysqli_query($conn, $sql_drugs)) {
+                while ($rows = mysqli_fetch_array($result)) {
+                    echo " <ul style=\"font-family: 'Rancho', cursive;font-size: larger\" class=\"list-group\">";
+                    echo " <li class=\"list-group-item d-flex justify-content-between align-items-center\">" . $rows['P_name'] . " <span class=\"badge badge-primary badge-pill\">" . ($rows['SLIPCOUNT']-1) . "</li>";
+                    echo " </ul>";
+                }
+            }
+            ?>
+
         </div>
     </div>
-    <!--modal signup-->
-    <!--modal signup-->
 
-    </div>
-
-    <div id="row"></div>
+    <!--/.Panel-->
 </main>
 <!-- Footer -->
-<footer class="page-footer font-small indigo">
-
-    <!-- Footer Links -->
-    <div class="container text-center text-md-left">
-
-        <!-- Grid row -->
-        <div class="row">
-
-            <!-- Grid column -->
-            <div class="col-md-3 mx-auto">
-
-                <!-- Links -->
-                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
-
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="#!">Very long link 1</a>
-                    </li>
-                    <li>
-                        <a href="#!">Very long link 2</a>
-                    </li>
-                    <li>
-                        <a href="#!">Very long link 3</a>
-                    </li>
-                    <li>
-                        <a href="#!">Very long link 4</a>
-                    </li>
-                </ul>
-
-            </div>
-            <!-- Grid column -->
-
-            <hr class="clearfix w-100 d-md-none">
-
-            <!-- Grid column -->
-            <div class="col-md-3 mx-auto">
-
-                <!-- Links -->
-                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
-
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="#!">Link 1</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 2</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 3</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 4</a>
-                    </li>
-                </ul>
-
-            </div>
-            <!-- Grid column -->
-
-            <hr class="clearfix w-100 d-md-none">
-
-            <!-- Grid column -->
-            <div class="col-md-3 mx-auto">
-
-                <!-- Links -->
-                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
-
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="#!">Link 1</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 2</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 3</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 4</a>
-                    </li>
-                </ul>
-
-            </div>
-            <!-- Grid column -->
-
-            <hr class="clearfix w-100 d-md-none">
-
-            <!-- Grid column -->
-            <div class="col-md-3 mx-auto">
-
-                <!-- Links -->
-                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
-
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="#!">Link 1</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 2</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 3</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 4</a>
-                    </li>
-                </ul>
-
-            </div>
-            <!-- Grid column -->
-
-        </div>
-        <!-- Grid row -->
-
-    </div>
-    <!-- Footer Links -->
-
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">© 2018 Copyright:
-        <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
-    </div>
-    <!-- Copyright -->
-
-</footer>
+<?php include 'Footer.php'?>
 <!-- Footer -->
 
 <!-- SCRIPTS -->
@@ -360,8 +255,33 @@
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="js/mdb.min.js"></script>
 <script>
+    $().DataTables()
+    $(document).ready(function () {
+        $('#dtVerticalScrollExample').DataTable({
+            "scrollY": "200px",
+            "scrollCollapse": true,
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+    $(document).ready(function () {
+        $('#dtHorizontalExample').DataTable({
+            "scrollX": true
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
     new WOW().init();
     new fadeInLeft().init();
+    $('#myAlert').on('closed.bs.alert', function () {
+        document.alert("You want to log out ??");
+    })
+    $('#dtVerticalScrollExample').addClass('animated zoomIn');
+    $('#your-custom-id-material').mdbDropSearch();
+    function myFunction(val) {
+        var str1 = "Accept.php?id=$row['P_id']";
+        var str2 = val;
+        var res = str1.concat(str2);
+        document.getElementById("demo").innerHTML = res;
+    }
 </script>
 
 </body>
